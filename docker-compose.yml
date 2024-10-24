@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  # MySQL service
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ordermanagement
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d # This will run SQL scripts to initialize DB, tables, indexes
+    networks:
+      - app-network
+
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  # Backend application service
+  application:
+    image: ghcr.io/thayaruban/ordermanagement_application:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ordermanagement
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    networks:
+      - app-network
+
+volumes:
+  db_data: {}
+
+networks:
+  app-network:
+    driver: bridge

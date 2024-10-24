@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "2d79c15c-1294-4052-bfea-0ef918a1c6f0",
+		"name": "Order Management API",
+		"description": "API Documentation for the Order Management System. This collection covers Client Sign Up, Sign In, Order Placement, Order Cancellation, and Fetching Order History with Pagination.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29105045"
+	},
+	"item": [
+		{
+			"name": "Client Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password\",\n    \"firstName\": \"First\",\n    \"lastName\": \"Last\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/order-management/user/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order-management",
+						"user",
+						"signup"
+					]
+				},
+				"description": "Registers a new user in the system"
+			},
+			"response": []
+		},
+		{
+			"name": "Client Sign In",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/order-management/user/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order-management",
+						"user",
+						"signin"
+					]
+				},
+				"description": "Authenticates the user and generates a JWT token"
+			},
+			"response": []
+		},
+		{
+			"name": "Place Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <JWT Token>",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemName\": \"Laptop\",\n    \"quantity\": 1,\n    \"shippingAddress\": \"123 Main St, City, Country\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/order-management/orders/place",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order-management",
+						"orders",
+						"place"
+					]
+				},
+				"description": "Places a new order for the authenticated user"
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <JWT Token>",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/order-management/orders/cancel/{orderReference}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order-management",
+						"orders",
+						"cancel",
+						"{orderReference}"
+					],
+					"variable": [
+						{
+							"key": "orderReference",
+							"value": "ORD123456"
+						}
+					]
+				},
+				"description": "Cancels an existing order for the authenticated user"
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Order History",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <JWT Token>",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/order-management/orders/history?pageNo=0&pageSize=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order-management",
+						"orders",
+						"history"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Fetches the order history for the authenticated user with pagination"
+			},
+			"response": []
+		}
+	]
+}
